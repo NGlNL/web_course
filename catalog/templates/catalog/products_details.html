@@ -1,0 +1,17 @@
+{% extends "catalog/base.html" %}
+{% block content %}
+<div class="container mt-5">
+  <h1 class="text-center">{{ product.name }}</h1>
+  <div class="row mt-5">
+    <div class="col-md-6">
+      <img src="{{ product.image }}" class="card-img-top" alt="{{ product.name }}">
+    </div>
+    <div class="col-md-6">
+      <p>Описание: {{ product.description }}</p>
+      <p>Цена: {{ product.purchase_price }}</p>
+      <p>Категория: {{ product.category.name }}</p>
+      <p>Дата: {{ product.created_at|date:"d.m.Y"}}</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
