@@ -1,4 +1,6 @@
 {% extends 'catalog/base.html' %}
+{% load my_tags %}
+
 {% block content %}
 <h2 class="mt-4 mb-4 text-center">Главная</h2>
 <h6 class="mt-4 mb-4 text-center">Вы находитесь на сайте по продаже товаров</h6>
@@ -6,7 +8,7 @@
     {% for product in products %}
     <div class="col">
         <div class="card" style="width: 18rem;">
-              <img src="{{ product.image }}" class="card-img-top" alt="{{ product.name }}">
+              <img src="{{ product.image | media_filter }}">
               <div class="card-body">
                   <h5 class="card-title">{{product.name}}</h5>
                   <p class="card-text">Описание: {{ product.description|truncatechars:100 }}</p>
