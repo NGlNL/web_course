@@ -1,26 +1,25 @@
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, render
+from django.views.generic import ListView, FormView, DetailView
 
+from .forms import ContactForm
 from .models import Product
 
 
-def index(request):
-    products = Product.objects.all()
-    context = {"products": products}
-    return render(request, "catalog/index.html", context)
+class IndexListView(ListView):
+    model = Product
+    template_name = "catalog/index.html"
+    context_object_name = "products"
 
 
-def contacts(request):
-    if request.method == "POST":
-        name = request.POST.get("name")
-        email = request.POST.get("email")
-        message = request.POST.get("message")
+class ContactView(FormView):
+    template_name = "catalog/contacts.html"
+    form_class = ContactForm
 
-        return HttpResponse(f"Спасибо, {name}! Сообшение получено.")
-    return render(request, "catalog/contacts.html")
+    def form_valid(self, form):
+        name = form.cleaned_data["name"]
+        return HttpResponse(f"Спасибо, {name}! Ваше сообщение отправлено.")
 
 
-def products_details(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    context = {"product": product}
-    return render(request, "catalog/products_details.html", context)
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = "catalog/products_details.html"
