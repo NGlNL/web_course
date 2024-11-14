@@ -6,6 +6,8 @@
     background-color: #1a1d20;
     color: #fff;
     padding: 20px;
+    z-index: 1000;
+    position: fixed;
 }
 .sidebar a {
     color: #fff;
