@@ -23,11 +23,10 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    name = models.CharField(
-        max_length=100, verbose_name="Наименование", help_text="Наименование товара"
-    )
+    name = models.CharField(max_length=100, verbose_name="Наименование")
     description = models.CharField(
-        max_length=100, verbose_name="Описание", help_text="Описание товара"
+        max_length=100,
+        verbose_name="Описание",
     )
     image = models.ImageField(
         upload_to="catalog/images",
@@ -41,13 +40,12 @@ class Product(models.Model):
         on_delete=models.SET_NULL,
         max_length=100,
         verbose_name="Категория",
-        help_text="Категория товара",
         null=True,
         blank=True,
         related_name="products",
     )
     purchase_price = models.DecimalField(
-        max_digits=10, decimal_places=2, verbose_name="Цена", help_text="Цена товара"
+        max_digits=10, decimal_places=2, verbose_name="Цена"
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
