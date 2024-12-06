@@ -17,9 +17,13 @@
                   <p class="card-text">Описание: {{ product.description|truncatechars:100 }}</p>
                   <p class="card-text">Цена: {{ product.purchase_price }}</p>
                   <a href="{% url 'catalog:products_detail' product.id %}" class="btn btn-primary ">Купить</a>
+                  {% if perms.catalog.can_unpublish_product or user == product.owner %}
                   <a href="{% url 'catalog:products_delete' product.id %}" class="btn btn-primary">Удалить</a>
+                  {% endif %}
               </div>
-              <a href="{% url 'catalog:products_update' product.id %}" class="btn btn-primary">Редактировать</a>
+               {% if user == product.owner %}
+                <a href="{% url 'catalog:products_update' product.id %}" class="btn btn-primary">Редактировать</a>
+               {% endif %}
         </div>
     </div>
     {% endfor %}

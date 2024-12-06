@@ -1,7 +1,8 @@
+import smtplib
+
 from django.core.mail import send_mail
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-
 
 from users.forms import UserRegisterForm
 from users.models import User
@@ -22,4 +23,9 @@ class UserCreateView(CreateView):
         message = "Спасибо за регистрацию!"
         from_email = "ng_nl01@mail.ru"
         recipient_list = [user_email]
-        send_mail(subject, message, from_email, recipient_list)
+        try:
+            send_mail(subject, message, from_email, recipient_list)
+        except smtplib.SMTPDataError as e:
+            print(
+                f"Ошибка при отправке письма, проверьте правильность написания почты: {e}"
+            )

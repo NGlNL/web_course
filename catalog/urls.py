@@ -21,4 +21,9 @@ urlpatterns = [
         views.ProductDeleteView.as_view(),
         name="products_delete",
     ),
+    path(
+        "catalog/unpublish/<int:product_id>/",
+        views.UnpublishProductView.as_view(),
+        name="unpublish_product",
+    ),
 ]
