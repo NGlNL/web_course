@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm, BooleanField
+from django.forms import BooleanField, ModelForm
 
 from catalog.models import Product
 
@@ -36,7 +36,14 @@ class StyleFormMixin:
 class ProductForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Product
-        fields = "__all__"
+        fields = [
+            "name",
+            "description",
+            "image",
+            "category",
+            "purchase_price",
+            "unpublish",
+        ]
 
     def clean_name(self):
         name = self.cleaned_data["name"].lower()

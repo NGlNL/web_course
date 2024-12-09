@@ -1,10 +1,10 @@
 from django.urls import reverse, reverse_lazy
 from django.views.generic import (
-    ListView,
     CreateView,
-    DetailView,
-    UpdateView,
     DeleteView,
+    DetailView,
+    ListView,
+    UpdateView,
 )
 
 from blog.models import Post

@@ -12,8 +12,17 @@
       <p>Цена: {{ product.purchase_price }}</p>
       <p>Категория: {{ product.category.name }}</p>
       <p>Дата: {{ product.created_at|date:"d.m.Y"}}</p>
+      <p>Публикация: {{ product.unpublish }}</p>
+      <p>Пользователь: {{ product.owner }}</p>
       <a href="{% url 'catalog:index' %}" class="btn btn-primary mt-3">Назад на главную</a>
     </div>
   </div>
 </div>
+{% if 'catalog.can_unpublish_product' in perms %}
+    <form action="{% url 'catalog:unpublish_product' product.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Снять с публикации</button>
+    </form>
+{% endif %}
+
 {% endblock %}
