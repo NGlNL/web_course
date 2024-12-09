@@ -4,9 +4,17 @@
 {% block content %}
 <h2 class="mt-4 mb-4 text-center">Главная</h2>
 <h6 class="mt-4 mb-4 text-center">Вы находитесь на сайте по продаже товаров</h6>
-<p>
-    <a href="{% url 'catalog:products_create' %}" class="btn btn-primary mt-3">Создать товар</a>
-</p>
+ <a href="{% url 'catalog:products_create' %}" class="btn btn-primary mt-3">Создать товар</a>
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Выбор категории
+        </button>
+        <ul class="dropdown-menu">
+            {% for category in categories %}
+                <li><a class="dropdown-item" href="?category_id={{ category.id }}{% if selected_category_id == category.id %}active{% endif %}">{{ category.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
 <div class="row row-cols-1 row-cols-md-3 g-4">
     {% for product in products %}
     <div class="col">

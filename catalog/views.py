@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, HttpResponseForbidden
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import (
@@ -15,7 +15,8 @@ from django.views.generic import (
 )
 
 from .forms import ContactForm, ProductForm
-from .models import Product
+from .models import Product, Category
+from .services import get_products_from_cache, ProductService
 
 
 class UnpublishProductView(LoginRequiredMixin, View):
@@ -34,6 +35,16 @@ class IndexListView(ListView):
     model = Product
     template_name = "catalog/index.html"
     context_object_name = "products"
+
+    def get_queryset(self):
+        return get_products_from_cache()
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        category = self.model.objects.get_queryset().first().category
+        context['products'] = ProductService.get_products_category(category)
+        return context
 
 
 class ContactView(FormView):
