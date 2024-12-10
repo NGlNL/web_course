@@ -7,7 +7,7 @@ from config.settings import CACHE_ENABLED
 def get_products_from_cache():
     if not CACHE_ENABLED:
         return Product.objects.all()
-    key = 'products_list'
+    key = "products_list"
     products = cache.get(key)
     if products is not None:
         return products

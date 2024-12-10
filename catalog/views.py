@@ -1,22 +1,17 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, HttpResponseForbidden
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import (
-    CreateView,
-    DeleteView,
-    DetailView,
-    FormView,
-    ListView,
-    UpdateView,
-)
+from django.views.generic import (CreateView, DeleteView, DetailView, FormView,
+                                  ListView, UpdateView)
 
 from .forms import ContactForm, ProductForm
-from .models import Product, Category
-from .services import get_products_from_cache, ProductService
+from .models import Category, Product
+from .services import ProductService, get_products_from_cache
 
 
 class UnpublishProductView(LoginRequiredMixin, View):
@@ -39,11 +34,20 @@ class IndexListView(ListView):
     def get_queryset(self):
         return get_products_from_cache()
 
-    def get_context_data(self, *, object_list=None, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()
-        category = self.model.objects.get_queryset().first().category
-        context['products'] = ProductService.get_products_category(category)
+        context["categories"] = Category.objects.all()
+        selected_category_id = self.request.GET.get("category_id")
+        if selected_category_id:
+            selected_category = get_object_or_404(Category, id=selected_category_id)
+            context["selected_category"] = selected_category
+            context["products"] = Product.objects.filter(category=selected_category)
+            if selected_category_id and selected_category_id == Product.objects.all():
+                selected_category = get_object_or_404(Category, id=selected_category_id)
+                context["selected_category"] = selected_category
+                context["products"] = Product.objects.filter(category=selected_category)
+        else:
+            context["products"] = Product.objects.all()
         return context
 
 

@@ -7,9 +7,14 @@
  <a href="{% url 'catalog:products_create' %}" class="btn btn-primary mt-3">Создать товар</a>
     <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        Выбор категории
+            {% if selected_category %}
+                {{ selected_category.name }}
+            {% else %}
+                Все категории
+            {% endif %}
         </button>
         <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="?category_id={% if not selected_category_id %}{% else %}{{ selected_category_id }}{% endif %}">Все категории</a></li>
             {% for category in categories %}
                 <li><a class="dropdown-item" href="?category_id={{ category.id }}{% if selected_category_id == category.id %}active{% endif %}">{{ category.name }}</a></li>
             {% endfor %}
@@ -30,7 +35,7 @@
                   {% endif %}
               </div>
                {% if user == product.owner %}
-                <a href="{% url 'catalog:products_update' product.id %}" class="btn btn-primary">Редактировать</a>
+                   <a href="{% url 'catalog:products_update' product.id %}" class="btn btn-primary">Редактировать</a>
                {% endif %}
         </div>
     </div>
