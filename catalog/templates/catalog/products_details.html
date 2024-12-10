@@ -18,11 +18,12 @@
     </div>
   </div>
 </div>
-{% if 'catalog.can_unpublish_product' in perms %}
-    <form action="{% url 'catalog:unpublish_product' product.id %}" method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-primary">Снять с публикации</button>
-    </form>
+{% if user.is_authenticated %}
+    {% if 'catalog.can_unpublish_product' in perms %}
+        <form action="{% url 'catalog:unpublish_product' product.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Снять с публикации</button>
+        </form>
+    {% endif %}
 {% endif %}
-
 {% endblock %}
